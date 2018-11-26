@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import smtplib
 import sqlite3
-
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 import feedparser
@@ -21,8 +21,7 @@ def article_not_in_db(article_title, article_date):
         True if the article is not in the database
         False if the article is in the database
     """
-    db.execute("SELECT * from magazine WHERE title=? AND date=?",
-               (article_title, article_date))
+
     db.execute("SELECT * FROM magazine WHERE title=? and date=?",
                (article_title, article_date))
 
@@ -60,7 +59,8 @@ def send_mail_notification(article_title, article_url):
     )
     msg['Subject'] = 'New Fedora Magazine Article available'
     msg['From'] = 'thiery.louison@gmail.com'
-    msg['To'] = 'thiery.louison@gmail.com, maracheea.m@gmail.com'
+    msg['To'] = 'thiery.louison@gmail.com'
+    msg['To'] = 'maracheea.m@gmail.com'
     smtp_server.send_message(msg)
     smtp_server.quit()
 
